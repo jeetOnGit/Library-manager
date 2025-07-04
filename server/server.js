@@ -3,6 +3,9 @@ import connectdb from './config/mongoDB.js'
 import dotenv from 'dotenv';
 import cors from 'cors'
 import userRouter from './routes/userRoute.js';
+// const bookRoutes = require("./routes/bookRoutes")
+import bookRoutes from './routes/BookRoute.js'
+
 
 dotenv.config();
 
@@ -15,6 +18,7 @@ app.use(cors())
 
 
 app.use('/api/user', userRouter)
+app.use("/api/books", bookRoutes);
 
 app.get('/', (req, res) =>{
     res.send("App is running")
