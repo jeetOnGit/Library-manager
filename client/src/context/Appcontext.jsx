@@ -7,26 +7,33 @@ export const AppContext = createContext();
 const Appcontextprovider = (props) => {
   const currencySymbol = "₹";
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [token, setToken] = useState(localStorage.getItem('token') || false);
+
+  const [token, setToken] = useState(() => {
+    const savedToken = localStorage.getItem("token");
+    return savedToken && savedToken !== "false" && savedToken !== "null"
+      ? savedToken
+      : "";
+  });
 
   const value = {
     backendUrl,
     token,
-    setToken
+    setToken,
+    currencySymbol
   };
 
-//    useEffect(() => {
-//         if (token) {
-//           loadUserData().catch(() => {
-//             localStorage.removeItem('token');
-//             setToken(false);
-            
-//             toast.error('Session expired. Please login again.');
-//           });
-//         } else {
-//         //   setUserData(false);
-//         }
-//       }, [token]);
+  //    useEffect(() => {
+  //         if (token) {
+  //           loadUserData().catch(() => {
+  //             localStorage.removeItem('token');
+  //             setToken(false);
+
+  //             toast.error('Session expired. Please login again.');
+  //           });
+  //         } else {
+  //         //   setUserData(false);
+  //         }
+  //       }, [token]);
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
   );

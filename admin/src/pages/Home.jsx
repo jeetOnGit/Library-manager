@@ -8,8 +8,7 @@ const Home = () => {
     <>
       <div>
           <div className="flex justify-start">
-            <Sidebar />
-            <Dashboard />
+
           </div>
       </div>
     </>

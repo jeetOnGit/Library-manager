@@ -12,7 +12,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="">
       <div className="container mx-auto">
         <div className="flex justify-between px-3 py-4 border-b">
           <h4 className="text-2xl font-semibold">Dashboard</h4>

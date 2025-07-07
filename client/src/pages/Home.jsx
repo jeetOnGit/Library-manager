@@ -7,7 +7,7 @@ const Home = () => {
   return (
     <>
       <div>
-          <div className="flex justify-start">
+          <div className="">
             <Sidebar />
             <Dashboard />
           </div>

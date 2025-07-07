@@ -7,12 +7,12 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    setToken(false);
-    localStorage.removeItem("token");
-    navigate("/");
-  };
+  localStorage.removeItem("token");
+  setToken(""); // ✅ clear token from context
+  navigate("/login"); // or navigate("/") if you prefer
+}
   return (
-    <div className="w-1/5 border-r h-screen max-[1000px]:w-fit flex flex-col justify-between">
+    <div className="w-1/5 border-r h-screen max-[1000px]:w-fit flex flex-col justify-between fixed bg-white">
       <div className="">
         <div
           className="flex items-center cursor-pointer gap-1 py-3 border-b px-3"
@@ -28,37 +28,37 @@ const Sidebar = () => {
           <p className="text-txtsecondary text-xs py-2 px-3">Management</p>
           <ul className="text-txtprimary flex flex-col">
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link>
+              <Link to='/dashboard'>
                 <i className="fa-solid fa-house" />{" "}
                 <span className="max-[1000px]:hidden">Overview</span>
               </Link>
             </li>
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link>
+              <Link to='/user-management'>
                 <i className="fa-solid fa-users" />{" "}
                 <span className="max-[1000px]:hidden">User Management</span>
               </Link>
             </li>
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='booksMgmt'>
+              <Link to='/books-management'>
                 <i className="fa-solid fa-swatchbook" />{" "}
-                <span className="max-[1000px]:hidden">Book Management</span>
+                <span className="max-[1000px]:hidden">Books Management</span>
               </Link>
             </li>
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link>
+              <Link to='/analytics'>
                 <i className="fa-solid fa-chart-simple" />{" "}
                 <span className="max-[1000px]:hidden">Analytics</span>
               </Link>
             </li>
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link>
+              <Link to='/reports'>
                 <i className="fa-solid fa-file" />{" "}
                 <span className="max-[1000px]:hidden">Reports</span>
               </Link>
             </li>
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link>
+              <Link to='/alerts'>
                 <i className="fa-solid fa-triangle-exclamation" />{" "}
                 <span className="max-[1000px]:hidden">System Alerts</span>
               </Link>
@@ -70,13 +70,13 @@ const Sidebar = () => {
           <p className="text-txtsecondary text-xs py-2 px-3">System</p>
           <ul className="text-txtprimary flex flex-col">
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link>
+              <Link to='/database'>
                 <i className="fa-solid fa-database" />{" "}
                 <span className="max-[1000px]:hidden">Database</span>
               </Link>
             </li>
             <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link>
+              <Link to='/settings'>
                 <i className="fa-solid fa-gear" />{" "}
                 <span className="max-[1000px]:hidden">Settings</span>
               </Link>

@@ -7,7 +7,14 @@ export const AppContext = createContext();
 const Appcontextprovider = (props) => {
   const currencySymbol = "₹";
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
-  const [token, setToken] = useState(localStorage.getItem('token') || false);
+  
+  const [token, setToken] = useState(() => {
+      const savedToken = localStorage.getItem("token");
+      return savedToken && savedToken !== "false" && savedToken !== "null"
+        ? savedToken
+        : "";
+    });
+  
 
   const value = {
     backendUrl,

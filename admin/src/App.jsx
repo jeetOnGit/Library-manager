@@ -5,17 +5,30 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import HomeOut from "./pages/HomeOut";
 import { ToastContainer } from "react-toastify";
+import BookMgmt from "./pages/BookMgmt";
+import { useContext } from "react";
+import { AppContext } from "./context/Appcontext";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./components/Dashboard";
 
 function App() {
+    const { token } = useContext(AppContext);
+    console.log(token);
+    
   return (
-    <div>
+    <div className="flex">
       <ToastContainer />
-      <Routes>
-        <Route path="/" element={<HomeOut />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin-dashboard" element={<Home />} />
-        <Route path="/booksMgmt" element={<Home />} />
-      </Routes>
+           {token && <Sidebar />}
+      <div className={`flex-1 h-screen overflow-y-auto transition-all duration-300 ${
+          token ? "ml-[20%] max-[1000px]:ml-0" : "ml-0"
+        }`}>
+        <Routes>
+          <Route path="/" element={<HomeOut />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/admin-dashboard" element={<Dashboard />} />
+          <Route path="/books-management" element={<BookMgmt />} />
+        </Routes>
+      </div>
     </div>
   );
 }
