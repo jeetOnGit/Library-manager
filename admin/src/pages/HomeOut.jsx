@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 const HomeOut = () => {
   const navigate = useNavigate();
 
-
   return (
     <>
       <nav className="bg-white px-6 py-4 border border-b">
@@ -26,7 +25,10 @@ const HomeOut = () => {
               />
             </div>
             <div>
-              <button className="flex justify-between items-center gap-3 border px-3 py-1 rounded hover:bg-bgprimary hover:text-white" onClick={() =>navigate('/login')}>
+              <button
+                className="flex justify-between items-center gap-3 border px-3 py-1 rounded hover:bg-bgprimary hover:text-white"
+                onClick={() => navigate("/login")}
+              >
                 <i className="fa-solid fa-arrow-right-to-bracket" />
                 <p className="font-medium">Sign Up</p>
               </button>
@@ -51,7 +53,10 @@ const HomeOut = () => {
               </p>
             </div>
             <div className="flex gap-4">
-              <button className="border px-8 py-2 bg-bgprimary text-white rounded hover:scale-110" onClick={() =>navigate('/login')}>
+              <button
+                className="border px-8 py-2 bg-bgprimary text-white rounded hover:scale-110"
+                onClick={() => navigate("/login")}
+              >
                 Browse Books{" "}
                 <span>
                   <i className="fa-solid fa-arrow-right" />
@@ -137,7 +142,7 @@ const HomeOut = () => {
                   <h6 className="text-4xl lg:text-5xl font-bold text-txtprimary mb-2">
                     2500+
                   </h6>
-                  <p className="text-txtsecondary">Active  text-lgStudents</p>
+                  <p className="text-txtsecondary">Active text-lgStudents</p>
                 </div>
 
                 <div className="text-center group hover:scale-105 transition-transform duration-300">
@@ -148,24 +153,29 @@ const HomeOut = () => {
                 </div>
               </div>
 
-
               <div className="secHeading w-fit text-center mx-auto my-16">
                 <h4 className="text-txtprimary text-3xl font-bold">
                   Ready to Get Started?
                 </h4>
                 <p className="text-txtsecondary text-sm mt-3 mb-7">
-                 Join thousands of students who have already transformed their study experience.
+                  Join thousands of students who have already transformed their
+                  study experience.
                 </p>
 
                 <div className="flex gap-4 justify-center">
-              <button className="border px-8 py-2 bg-bgprimary text-white rounded hover:scale-110" onClick={() =>navigate('/login')}>
-                Start Browsing
-                <span>
-                  <i className="fa-solid fa-arrow-right ms-2" />
-                </span>
-              </button>
-              <button className="border px-8 py-2 rounded">Contact Support</button>
-            </div>
+                  <button
+                    className="border px-8 py-2 bg-bgprimary text-white rounded hover:scale-110"
+                    onClick={() => navigate("/login")}
+                  >
+                    Start Browsing
+                    <span>
+                      <i className="fa-solid fa-arrow-right ms-2" />
+                    </span>
+                  </button>
+                  <button className="border px-8 py-2 rounded">
+                    Contact Support
+                  </button>
+                </div>
               </div>
             </div>
           </section>

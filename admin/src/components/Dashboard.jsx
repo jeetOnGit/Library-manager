@@ -5,11 +5,6 @@ const Dashboard = () => {
   const { backendUrl, token, setToken } = useContext(AppContext);
   const navigate = useNavigate();
 
-  const logout = () => {
-    setToken("");
-    localStorage.removeItem("token");
-    navigate("/");
-  };
 
   return (
     <div className="w-full">

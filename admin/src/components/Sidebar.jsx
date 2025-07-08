@@ -1,16 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Appcontext";
 
 const Sidebar = () => {
-    const { backendUrl, token, setToken } = useContext(AppContext);
+  const { backendUrl, token, setToken } = useContext(AppContext);
   const navigate = useNavigate();
 
   const logout = () => {
-  localStorage.removeItem("token");
-  setToken(""); // ✅ clear token from context
-  navigate("/login"); // or navigate("/") if you prefer
-}
+    localStorage.removeItem("token");
+    setToken("");
+    navigate("/login");
+  };
   return (
     <div className="w-1/5 border-r h-screen max-[1000px]:w-fit flex flex-col justify-between fixed bg-white">
       <div className="">
@@ -27,38 +27,38 @@ const Sidebar = () => {
         <div className="navigation border-b text-start">
           <p className="text-txtsecondary text-xs py-2 px-3">Management</p>
           <ul className="text-txtprimary flex flex-col">
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/dashboard'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/dashboard">
                 <i className="fa-solid fa-house" />{" "}
                 <span className="max-[1000px]:hidden">Overview</span>
               </Link>
             </li>
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/user-management'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/user-management">
                 <i className="fa-solid fa-users" />{" "}
                 <span className="max-[1000px]:hidden">User Management</span>
               </Link>
             </li>
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/books-management'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/books-management">
                 <i className="fa-solid fa-swatchbook" />{" "}
                 <span className="max-[1000px]:hidden">Books Management</span>
               </Link>
             </li>
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/analytics'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/analytics">
                 <i className="fa-solid fa-chart-simple" />{" "}
                 <span className="max-[1000px]:hidden">Analytics</span>
               </Link>
             </li>
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/reports'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/reports">
                 <i className="fa-solid fa-file" />{" "}
                 <span className="max-[1000px]:hidden">Reports</span>
               </Link>
             </li>
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/alerts'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/alerts">
                 <i className="fa-solid fa-triangle-exclamation" />{" "}
                 <span className="max-[1000px]:hidden">System Alerts</span>
               </Link>
@@ -69,14 +69,14 @@ const Sidebar = () => {
         <div className="account text-start">
           <p className="text-txtsecondary text-xs py-2 px-3">System</p>
           <ul className="text-txtprimary flex flex-col">
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/database'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/database">
                 <i className="fa-solid fa-database" />{" "}
                 <span className="max-[1000px]:hidden">Database</span>
               </Link>
             </li>
-            <li  className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to='/settings'>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/settings">
                 <i className="fa-solid fa-gear" />{" "}
                 <span className="max-[1000px]:hidden">Settings</span>
               </Link>
@@ -85,9 +85,10 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 border-t px-3 py-1 cursor-pointer hover:bg-[#f2f3f5]"
-        onClick={logout}>
- 
+      <div
+        className="flex items-center gap-3 border-t px-3 py-1 cursor-pointer hover:bg-[#f2f3f5]"
+        onClick={logout}
+      >
         <i className="fa-solid fa-arrow-right-to-bracket" />
         <p className="font-medium max-[1000px]:hidden">Sign Out</p>
       </div>

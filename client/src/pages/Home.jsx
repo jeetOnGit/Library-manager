@@ -7,10 +7,10 @@ const Home = () => {
   return (
     <>
       <div>
-          <div className="">
+          {/* <div className="">
             <Sidebar />
             <Dashboard />
-          </div>
+          </div> */}
       </div>
     </>
   );

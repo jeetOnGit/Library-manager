@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 const HomeOut = () => {
   const navigate = useNavigate();
 
-
   return (
     <>
       <nav className="bg-white px-6 py-4 border border-b">

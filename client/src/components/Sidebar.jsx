@@ -3,14 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/Appcontext";
 
 const Sidebar = () => {
-  const { backendUrl, token, setToken } = useContext(AppContext);
+  const { setToken } = useContext(AppContext);
   const navigate = useNavigate();
 
   const logout = () => {
-  localStorage.removeItem("token");
-  setToken(""); // ✅ clear token from context
-  navigate("/login"); // or navigate("/") if you prefer
-}
+    localStorage.removeItem("token");
+    setToken("");
+    navigate("/login");
+  };
   return (
     <div className="w-1/5 border-r h-screen max-[1000px]:w-fit flex flex-col justify-between fixed bg-white">
       <div
