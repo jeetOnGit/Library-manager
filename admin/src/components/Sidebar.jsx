@@ -28,7 +28,7 @@ const Sidebar = () => {
           <p className="text-txtsecondary text-xs py-2 px-3">Management</p>
           <ul className="text-txtprimary flex flex-col">
             <li className="hover:bg-[#f2f3f5] px-3 py-2">
-              <Link to="/dashboard">
+              <Link to="/admin-dashboard">
                 <i className="fa-solid fa-house" />{" "}
                 <span className="max-[1000px]:hidden">Overview</span>
               </Link>

@@ -8,6 +8,12 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import BrowsePage from "./pages/BrowsePage";
 import { AppContext } from "./context/Appcontext";
+import MyBooks from "./pages/MyBooks";
+import ReadingHistory from "./pages/ReadingHistory";
+import Favourites from "./pages/Favourites";
+import Recommendations from "./pages/Recommendation";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 function App() {
   const { token } = useContext(AppContext);
@@ -22,10 +28,16 @@ function App() {
         }`}
       >
         <Routes>
-          <Route path="/" element={<HomeOut />} />
+          <Route path="/" element={token ? <Dashboard /> : <HomeOut />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/browse-books" element={<BrowsePage />} />
+          <Route path="/my-books" element={<MyBooks />} />
+          <Route path="/history" element={<ReadingHistory />} />
+          <Route path="/favourites" element={<Favourites />} />
+          <Route path="/recommendations" element={<Recommendations />} />
+          <Route path="/my-profile" element={<Profile />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </div>

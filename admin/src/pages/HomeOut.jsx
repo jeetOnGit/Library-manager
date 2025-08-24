@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { AppContext } from "../context/Appcontext";
+import Sidebar from '../components/Sidebar'
 const HomeOut = () => {
   const navigate = useNavigate();
+const { token } = useContext(AppContext);
+
+
 
   return (
     <>

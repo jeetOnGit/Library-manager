@@ -8,6 +8,7 @@ import BookMgmt from "./pages/BookMgmt";
 import { AppContext } from "./context/Appcontext";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
+import UserManagement from "./pages/UserMgmt";
 
 function App() {
   const { token } = useContext(AppContext);
@@ -22,10 +23,11 @@ function App() {
         }`}
       >
         <Routes>
-          <Route path="/" element={<HomeOut />} />
+          <Route path="/" element={token ? <Dashboard /> : <HomeOut />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin-dashboard" element={<Dashboard />} />
           <Route path="/books-management" element={<BookMgmt />} />
+          <Route path="/user-management" element={<UserManagement />} />
         </Routes>
       </div>
     </div>

@@ -1,5 +1,14 @@
 import Book from '../models/Book.js'
 
+// Get all Books
+const getAllBooks = async (req, res) => {
+  try {
+    const books = await Book.find().sort({ createdAt: -1 }); // newest first
+    res.status(200).json({ success: true, books });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
 // Add single book
 const addBook = async (req, res) => {
   try {
@@ -83,5 +92,21 @@ const markDelayed = async (req, res) => {
   }
 };
 
+// DELETE /books/:id
+const deleteBook = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedBook = await Book.findByIdAndDelete(id);
 
-export { addBook, bulkAddBooks, issueBook, returnBook, markDelayed }
+    if (!deletedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.status(200).json({ message: "Book deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+export { addBook, bulkAddBooks, issueBook, returnBook, markDelayed, getAllBooks, deleteBook }

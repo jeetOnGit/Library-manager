@@ -37,7 +37,7 @@ const registerUser = async (req, res) => {
         const newUser = new userModel(userData)
         const user = await newUser.save()
 
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
+        const token = jwt.sign( { id: user._id, role: user.role }, process.env.JWT_SECRET)
         res.json({ success: true, token })
 
     } catch (error) {
@@ -72,4 +72,14 @@ const loginUser = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser }
+// Get all Users
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userModel.find().sort({ createdAt: -1 }); // newest first
+    res.status(200).json({ success: true, users });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+export { registerUser, loginUser, getAllUsers }
