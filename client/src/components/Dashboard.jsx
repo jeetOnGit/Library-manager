@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/Appcontext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Dashboard = () => {
   const { backendUrl, token, setToken } = useContext(AppContext);
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const Dashboard = () => {
               for you.
             </p>
             <button className="bg-bgprimary text-white px-4 py-2 rounded">
-              Browse Books <i className="fa-solid fa-arrow-right" />
+              <Link to='/browse-books'>Browse Books <i className="fa-solid fa-arrow-right" /></Link>
             </button>
           </div>
         </section>

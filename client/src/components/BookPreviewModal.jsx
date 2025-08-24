@@ -68,6 +68,13 @@ const BookPreviewModal = ({ book, onClose }) => {
           >
             Borrow
           </button>
+
+          <button
+            disabled={book.copies === 0}
+            className={`flex-1 px-3 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
+          >
+            Add to wishlist
+          </button>
         </div>
       </div>
     </div>
