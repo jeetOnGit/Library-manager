@@ -1,6 +1,6 @@
 import express from 'express'
-import { registerUser, loginUser, getAllUsers, addFavBooks, getFavBooks, removeFavBook, borrowBook, returnBook } from '../controllers/userController.js'
-// import authUser from '../middlewares/authUser.js'
+import { registerUser, loginUser, getAllUsers, addFavBooks, getFavBooks, removeFavBook, borrowBook, returnBook, getMyProfile } from '../controllers/userController.js'
+import authUser from '../middlewares/authUser.js'
 
 const userRouter = express.Router()
 
@@ -14,6 +14,7 @@ userRouter.post('/:userId/borrow-book/:bookId', borrowBook)
 userRouter.post('/:userId/return-book/:bookId', returnBook)
 
 userRouter.get('/all-users', getAllUsers)
+userRouter.get('/me', authUser, getMyProfile)
 userRouter.get('/:userId/favourites', getFavBooks)
 
 export default userRouter

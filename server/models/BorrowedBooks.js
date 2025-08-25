@@ -1,18 +1,16 @@
-import mongoose from 'mongoose'
+// models/Borrow.js
+import mongoose from "mongoose";
 
-const borrowedBookSchema = new mongoose.Schema({
-  studentId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+const borrowSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  book: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
+  qrCode: { type: String }, // store QR data
+  status: { 
+    type: String, 
+    enum: ["pending", "approved", "rejected"], 
+    default: "pending" 
   },
-  bookId: { type: mongoose.Schema.Types.ObjectId, ref: "Book", required: true },
-  borrowDate: { type: Date, default: Date.now },
-  dueDate: { type: Date, required: true },
-  qrCode: { type: String }, // store QR image URL or base64
-  status: { type: String, default: "Pending" }, // Pending, Collected, Returned
+  borrowedAt: { type: Date, default: Date.now }
 });
 
-
-const borrowedBook = mongoose.model("borrowedBook", borrowedBookSchema);
-export default borrowedBook
+export default mongoose.model("Borrow", borrowSchema);

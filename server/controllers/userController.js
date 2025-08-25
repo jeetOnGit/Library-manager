@@ -268,6 +268,33 @@ const returnBook = async (req, res) => {
   }
 };
 
+// get user's profile
+const getMyProfile = async(req, res) => {
+  try {
+    const user = await userModel
+    .findById(req.userId)
+    .populate("favourites")
+    .populate("borrowedBooks.book")
+
+    if(!user){
+      res.status(400).json({success: false, message: "User not found"})
+    }
+
+    res.json({
+      success:true,
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        favourites: user.favourites,
+        borrowedBooks: user.borrowedBooks
+      }
+    });
+
+  } catch (err) {
+     res.status(500).json({ error: err.message });
+  }
+}
 
 export {
   registerUser,
@@ -278,4 +305,5 @@ export {
   removeFavBook,
   borrowBook,
   returnBook,
+  getMyProfile
 };

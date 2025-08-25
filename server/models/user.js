@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
       default: "student",
     },
     favourites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
-    rentedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
+    // rentedBooks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
     history: [{ type: mongoose.Schema.Types.ObjectId, ref: "Book" }],
     borrowedBooks: [
       {

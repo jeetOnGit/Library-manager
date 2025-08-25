@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../context/Appcontext";
 import BookPreviewModal from "../components/BookPreviewModal";
+import axios from "axios";
+import { toast } from "react-toastify";
+
 
 const BrowseBooks = () => {
-  const { backendUrl } = useContext(AppContext);
+  const { backendUrl, user, fetchProfile, token } = useContext(AppContext);
   const [books, setBooks] = useState([]);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
@@ -63,6 +66,33 @@ const BrowseBooks = () => {
   const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
 
   const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+
+
+  const handleBorrow = async (bookId) => {
+    try {
+      const res = await axios.post(
+        `${backendUrl}/api/users/${user.id}/borrow-book/${bookId}`,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+
+      toast.success(res.data.message || "Book borrowed successfully! 🎉");
+      fetchProfile();
+
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+      toast.error(err.response.data.message);
+    } else {
+      toast.error("Borrow failed:", err);
+    }
+    }
+  };
+
 
   return (
     <div className="p-6">
@@ -132,10 +162,10 @@ const BrowseBooks = () => {
               </p>
               <p
                 className={`mb-4 text-sm font-medium ${book.copies > 3
-                    ? "text-green-600"
-                    : book.copies > 0
-                      ? "text-yellow-600"
-                      : "text-red-600"
+                  ? "text-green-600"
+                  : book.copies > 0
+                    ? "text-yellow-600"
+                    : "text-red-600"
                   }`}
               >
                 {book.copies > 3
@@ -148,9 +178,10 @@ const BrowseBooks = () => {
                 <button
                   disabled={book.copies === 0}
                   className={`flex-1 px-3 py-2 rounded text-white ${book.copies === 0
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-500 hover:bg-blue-600"
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-500 hover:bg-blue-600"
                     }`}
+                  onClick={() => handleBorrow(book._id)}
                 >
                   Borrow
                 </button>
@@ -174,8 +205,8 @@ const BrowseBooks = () => {
             key={num}
             onClick={() => setCurrentPage(num)}
             className={`px-3 py-1 border rounded ${currentPage === num
-                ? "bg-blue-500 text-white"
-                : "hover:bg-gray-100"
+              ? "bg-blue-500 text-white"
+              : "hover:bg-gray-100"
               }`}
           >
             {num}
@@ -189,7 +220,7 @@ const BrowseBooks = () => {
       />
     </div>
 
-    
+
   );
 };
 
