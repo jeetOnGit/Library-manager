@@ -7,7 +7,7 @@ const borrowSchema = new mongoose.Schema({
   qrCode: { type: String }, // store QR data
   status: { 
     type: String, 
-    enum: ["pending", "approved", "rejected"], 
+    enum: ['pending', 'approved', 'rejected', 'returned'], 
     default: "pending" 
   },
   borrowedAt: { type: Date, default: Date.now }

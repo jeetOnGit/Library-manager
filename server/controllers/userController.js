@@ -3,6 +3,7 @@ import bookModel from "../models/Book.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import validator from "validator";
+import Borrow from "../models/BorrowedBooks.js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -189,52 +190,6 @@ const getFavBooks = async (req, res) => {
   }
 };
 
-// Borrow a book
-const borrowBook = async (req, res) => {
-  try {
-    const { userId, bookId } = req.params;
-
-    const book = await bookModel.findById(bookId);
-    if (!book) return res.status(404).json({ message: "Book not found" });
-
-    if (book.availableCopies <= 0) {
-      return res.status(400).json({ message: "Book not available" });
-    }
-
-    // check if already borrowed
-    const user = await userModel.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const alreadyBorrowed = user.borrowedBooks.some(
-      (b) => b.book.toString() === bookId
-    );
-
-    if (alreadyBorrowed) {
-      return res.status(400).json({ message: "Book already borrowed" });
-    }
-
-    // push book into user's borrowedBooks
-    await userModel.findByIdAndUpdate(userId, {
-      $push: {
-        borrowedBooks: {
-          book: bookId,
-          borrowedAt: new Date(),
-          dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        },
-      },
-    });
-
-    // update book (decrease copy)
-    await bookModel.findByIdAndUpdate(bookId, {
-      $inc: { availableCopies: -1 },
-    });
-
-    res.status(200).json({ message: "Book borrowed successfully" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
 
 
 // Return a book
@@ -268,33 +223,47 @@ const returnBook = async (req, res) => {
   }
 };
 
-// get user's profile
-const getMyProfile = async(req, res) => {
+
+const getMyProfile = async (req, res) => {
   try {
-    const user = await userModel
-    .findById(req.userId)
-    .populate("favourites")
-    .populate("borrowedBooks.book")
+    const user = req.user;
 
-    if(!user){
-      res.status(400).json({success: false, message: "User not found"})
-    }
-
-    res.json({
-      success:true,
-      user: {
-        id: user._id,
-        email: user.email,
-        role: user.role,
-        favourites: user.favourites,
-        borrowedBooks: user.borrowedBooks
+    // The crash is happening on one of the next two lines:
+    await user.populate('favourites');
+    await user.populate({
+      path: 'borrowRequests', 
+      match: { status: { $in: ['pending', 'approved'] } },
+      populate: {
+         path: 'book',
+         model: 'Book'
       }
     });
 
+    res.status(200).json({
+      success: true,
+      user: user,
+    });
+
   } catch (err) {
-     res.status(500).json({ error: err.message });
+     console.error("Get Profile Error:", err);
+     res.status(500).json({ success: false, error: err.message });
   }
-}
+};
+
+const getMyRequests = async (req, res) => {
+  try {
+    const userId = req.user.id; // comes from auth middleware
+
+    const myRequests = await Borrow.find({ user: userId })
+      .populate("book", "title author coverImage")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(myRequests);
+  } catch (error) {
+    res.status(500).json({ message: "Server error fetching your requests", error: error.message });
+  }
+};
+
 
 export {
   registerUser,
@@ -303,7 +272,7 @@ export {
   addFavBooks,
   getFavBooks,
   removeFavBook,
-  borrowBook,
   returnBook,
-  getMyProfile
+  getMyProfile,
+  getMyRequests
 };

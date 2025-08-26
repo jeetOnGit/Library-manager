@@ -30,7 +30,7 @@ const Profile = () => {
             href="/my-books"
             className="p-4 bg-white rounded-xl shadow hover:bg-blue-50 transition"
           >
-            📚 My Books {user.borrowedBooks.length}
+            📚 My Books 
           </a>
           <a
             href="/history"

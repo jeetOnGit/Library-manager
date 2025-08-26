@@ -1,6 +1,7 @@
 import express from 'express'
-import { registerUser, loginUser, getAllUsers, addFavBooks, getFavBooks, removeFavBook, borrowBook, returnBook, getMyProfile } from '../controllers/userController.js'
+import { registerUser, loginUser, getAllUsers, addFavBooks, getFavBooks, removeFavBook, getMyProfile, getMyRequests } from '../controllers/userController.js'
 import authUser from '../middlewares/authUser.js'
+import { borrowBook, returnBook, withdrawRequest } from '../controllers/BookBorrow.js'
 
 const userRouter = express.Router()
 
@@ -10,8 +11,10 @@ userRouter.post('/login', loginUser)
 userRouter.post('/:userId/add-favourites/:bookId', addFavBooks)
 userRouter.post('/:userId/remove-favourites/:bookId', removeFavBook)
 
-userRouter.post('/:userId/borrow-book/:bookId', borrowBook)
-userRouter.post('/:userId/return-book/:bookId', returnBook)
+userRouter.post('/borrow-book/:bookId', authUser, borrowBook)
+userRouter.get('/my-requests', authUser, getMyRequests);
+userRouter.delete('/withdraw-request/:bookId', authUser, withdrawRequest);
+userRouter.post('/return/:bookId', authUser, returnBook);
 
 userRouter.get('/all-users', getAllUsers)
 userRouter.get('/me', authUser, getMyProfile)

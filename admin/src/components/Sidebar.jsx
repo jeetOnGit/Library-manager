@@ -46,6 +46,12 @@ const Sidebar = () => {
               </Link>
             </li>
             <li className="hover:bg-[#f2f3f5] px-3 py-2">
+              <Link to="/requests">
+                <i className="fa-solid fa-swatchbook" />{" "}
+                <span className="max-[1000px]:hidden">Requests</span>
+              </Link>
+            </li>
+            <li className="hover:bg-[#f2f3f5] px-3 py-2">
               <Link to="/analytics">
                 <i className="fa-solid fa-chart-simple" />{" "}
                 <span className="max-[1000px]:hidden">Analytics</span>

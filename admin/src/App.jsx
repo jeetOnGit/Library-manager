@@ -9,6 +9,7 @@ import { AppContext } from "./context/Appcontext";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";
 import UserManagement from "./pages/UserMgmt";
+import Requests from "./pages/Requests";
 
 function App() {
   const { token } = useContext(AppContext);
@@ -28,6 +29,7 @@ function App() {
           <Route path="/admin-dashboard" element={<Dashboard />} />
           <Route path="/books-management" element={<BookMgmt />} />
           <Route path="/user-management" element={<UserManagement />} />
+          <Route path="/requests" element={<Requests />} />
         </Routes>
       </div>
     </div>
