@@ -172,6 +172,8 @@ const Appcontextprovider = (props) => {
   useEffect(() => {
     if (token) {
       fetchProfile();
+    }else{
+    setUser({ name: "Guest" });
     }
   }, [token]);
 
