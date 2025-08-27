@@ -19,6 +19,7 @@ app.use(cors({
   origin: [
         "http://localhost:5173",
         "http://localhost:5174",
+    "https://easyibrary.netlify.app"
         
     ], 
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
