@@ -3,11 +3,13 @@ import { QRCodeCanvas } from "qrcode.react";
 import { AppContext } from "../context/Appcontext";
 
 const MyBooks = () => {
-  const { myRequests, fetchMyRequests } = useContext(AppContext);
+  const { myRequests, fetchMyRequests, returnBook } = useContext(AppContext);
   const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     fetchMyRequests();
+    // console.log(myRequests[0].status);
+
   }, []);
 
   const handleShowQR = (request) => {
@@ -39,23 +41,30 @@ const MyBooks = () => {
           <h2 className="text-lg font-semibold">{req.book?.title}</h2>
           <p className="text-gray-600">{req.book?.author}</p>
           <span
-            className={`mt-2 px-3 py-1 text-xs font-semibold rounded-full ${
-              statusColors[req.status]
-            }`}
+            className={`mt-2 px-3 py-1 text-xs font-semibold rounded-full ${statusColors[req.status]
+              }`}
           >
             {req.status.charAt(0).toUpperCase() + req.status.slice(1)}
           </span>
           <button
             onClick={() => handleShowQR(req)}
             disabled={req.status !== "approved"}
-            className={`mt-3 px-4 py-2 rounded-lg transition ${
-              req.status === "approved"
-                ? "bg-blue-600 text-white hover:bg-blue-700"
-                : "bg-gray-300 text-gray-500 cursor-not-allowed"
-            }`}
+            className={`mt-3 px-4 py-2 rounded-lg transition ${req.status === "approved"
+              ? "bg-blue-600 text-white hover:bg-blue-700"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
           >
             Show QR
           </button>
+
+          {req.status === "approved" && (
+            <button
+              onClick={() => returnBook(req._id)}
+              className="mt-2 px-3 py-1 bg-red-600 text-white rounded hover:bg-blue-600 transition"
+            >
+              Return Book
+            </button>
+          )}
         </div>
       ))}
 

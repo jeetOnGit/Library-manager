@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppContext } from "../context/Appcontext";
 import { Link, useNavigate } from "react-router-dom";
 const Dashboard = () => {
-  const { backendUrl, token, setToken } = useContext(AppContext);
+  const { backendUrl, token, setToken, user } = useContext(AppContext);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -24,7 +24,7 @@ const Dashboard = () => {
 
         <section className="py-6">
           <div className="flex flex-col justify-between items-start rounded px-3 py-6 bg-[#f2f3f5] mx-2">
-            <h5 className="text-3xl font-bold">Welcome back, Student!</h5>
+            <h5 className="text-3xl font-bold">Welcome back, {user.name}!</h5>
             <p className="text-txtsecondary my-4">
               You have 2 books currently borrowed and 2 recommendations waiting
               for you.

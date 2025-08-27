@@ -14,7 +14,7 @@ userRouter.post('/:userId/remove-favourites/:bookId', removeFavBook)
 userRouter.post('/borrow-book/:bookId', authUser, borrowBook)
 userRouter.get('/my-requests', authUser, getMyRequests);
 userRouter.delete('/withdraw-request/:bookId', authUser, withdrawRequest);
-userRouter.post('/return/:bookId', authUser, returnBook);
+userRouter.patch('/return/:borrowId', authUser, returnBook);
 
 userRouter.get('/all-users', getAllUsers)
 userRouter.get('/me', authUser, getMyProfile)

@@ -37,6 +37,7 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const userData = {
+      name,
       email,
       password: hashedPassword,
     };
@@ -191,39 +192,6 @@ const getFavBooks = async (req, res) => {
 };
 
 
-
-// Return a book
-const returnBook = async (req, res) => {
-  try {
-    const { userId, bookId } = req.params;
-
-    const user = await userModel.findById(userId);
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const borrowed = user.borrowedBooks.find(
-      (b) => b.book.toString() === bookId.toString()
-    );
-    if (!borrowed) {
-      return res.status(400).json({ message: "Book was not borrowed" });
-    }
-
-    // remove from borrowedBooks by matching `book`
-    await userModel.findByIdAndUpdate(userId, {
-      $pull: { borrowedBooks: { book: bookId } },
-    });
-
-    // increase book availableCopies
-    await bookModel.findByIdAndUpdate(bookId, {
-      $inc: { availableCopies: 1 },
-    });
-
-    res.status(200).json({ message: "Book returned successfully" });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-};
-
-
 const getMyProfile = async (req, res) => {
   try {
     const user = req.user;
@@ -272,7 +240,6 @@ export {
   addFavBooks,
   getFavBooks,
   removeFavBook,
-  returnBook,
   getMyProfile,
   getMyRequests
 };

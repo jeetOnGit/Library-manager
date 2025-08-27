@@ -15,7 +15,7 @@ const approveManually = async (req, res) => {
     borrow.status = "approved";
     await borrow.save();
 
-    borrow.book.availableCopies -= 1;
+    borrow.book.copies -= 1;
     await borrow.book.save();
 
     res.json({ message: "Borrow approved manually", borrow });

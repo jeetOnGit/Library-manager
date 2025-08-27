@@ -140,8 +140,8 @@ const BrowseBooks = () => {
       {/* Book Cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {currentBooks.length > 0 ? (
-          currentBooks.map((book) => { // ✅ USE CURLY BRACE HERE
-            // Determine the current status of this specific book for the user
+          currentBooks.map((book) => { 
+            
             const userRequest = borrowedRequest.find(req => req.book === book._id);
             const requestStatus = userRequest ? userRequest.status : null;
 
@@ -200,10 +200,10 @@ const BrowseBooks = () => {
                 </div>
               </div>
             );
-          }) // ✅ This parenthesis now closes the map function call
+          })
         ) : (
           <p className="col-span-full text-center text-gray-500">
-            No books found.
+            Loading your books!
           </p>
         )}
       </div>
