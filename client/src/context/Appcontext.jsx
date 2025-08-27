@@ -19,19 +19,6 @@ const Appcontextprovider = (props) => {
       ? savedToken
       : "";
   });
-const fetchProfile = async () => {
-  if (!token) return; // skip if no token
-
-  try {
-    const res = await axios.get(`${backendUrl}/api/users/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setUser(res.data.user);
-  } catch (error) {
-    console.error("Failed to load profile", error);
-    setUser({ name: "Guest" }); // fallback
-  }
-};
 
   const fetchProfile = async () => {
     if (!token) return;
