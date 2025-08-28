@@ -18,7 +18,9 @@ app.use(cors({
   origin: [
         "http://localhost:5173",
         "http://localhost:5174",
-        "https://easyibrary.netlify.app"
+        "https://easyibrary.netlify.app",
+    "https://easyibrary.netlify.app",
+    "https://easyibrary.onrender.com"
     ], 
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   credentials: true,                // allow cookies / auth headers

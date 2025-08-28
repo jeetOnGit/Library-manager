@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate  } from "react-router-dom";
 import "./App.css";
 import Login from "./pages/Login";
 import HomeOut from "./pages/HomeOut";
@@ -28,7 +28,7 @@ function App() {
         }`}
       >
         <Routes>
-          <Route path="/" element={token ? <Dashboard /> : <HomeOut />} />
+          <Route path="/" element={token ? <Dashboard /> : <Navigate to="/login" replace />}  />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/browse-books" element={token ? <BrowsePage /> : <HomeOut />} />
