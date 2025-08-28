@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
-
 import { AppContext } from "../context/Appcontext";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -25,7 +24,7 @@ const Login = () => {
         });
         if (data.success) {
           toast.success("Registration successful! Please login.");
-          setState("login"); 
+          setState("login");
           setName("");
           setEmail("");
           setPassword("");
@@ -36,7 +35,10 @@ const Login = () => {
         const { data } = await axios.post(backendUrl + "/api/users/login", {
           password,
           email,
-        });
+        },
+          {
+            withCredentials: true
+          });
         if (data.success) {
           localStorage.setItem("token", data.token);
           setToken(data.token);
@@ -48,7 +50,7 @@ const Login = () => {
       }
     } catch (error) {
       toast.error(error.message);
-    }
+  } 
   };
 
   return (

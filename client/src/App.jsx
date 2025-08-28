@@ -31,7 +31,7 @@ function App() {
           <Route path="/" element={token ? <Dashboard /> : <HomeOut />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/browse-books" element={<BrowsePage />} />
+          <Route path="/browse-books" element={token ? <BrowsePage /> : <HomeOut />} />
           <Route path="/my-books" element={<MyBooks />} />
           <Route path="/history" element={<ReadingHistory />} />
           <Route path="/favourites" element={<Favourites />} />

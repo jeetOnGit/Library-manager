@@ -10,8 +10,9 @@ const JWT_SECRET = process.env.JWT_SECRET;
 // Register user
 const registerUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { name, email, password } = req.body;
+    console.log(JWT_SECRET);
+    if (!name || !email || !password) {
       return res.json({ success: false, message: "Missing Details" });
     }
     if (!validator.isEmail(email)) {
@@ -20,7 +21,7 @@ const registerUser = async (req, res) => {
     if (password.length < 8) {
       return res.json({
         success: false,
-        message: "Password must be 8 characters",
+        message: "Password must be atleast 8 characters",
       });
     }
 
@@ -43,11 +44,8 @@ const registerUser = async (req, res) => {
     };
     const newUser = new userModel(userData);
     const user = await newUser.save();
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
 
-    const token = jwt.sign(
-      { id: user._id, role: user.role },
-      process.env.JWT_SECRET
-    );
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
@@ -74,7 +72,7 @@ const loginUser = async (req, res) => {
     // compare password
     const isMatch = await bcrypt.compare(password, user.password);
     if (isMatch) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET);
       res.json({ success: true, token });
     } else {
       res.json({ success: false, message: "Invalid Credintials" });
@@ -191,30 +189,28 @@ const getFavBooks = async (req, res) => {
   }
 };
 
-
 const getMyProfile = async (req, res) => {
   try {
     const user = req.user;
 
     // The crash is happening on one of the next two lines:
-    await user.populate('favourites');
+    await user.populate("favourites");
     await user.populate({
-      path: 'borrowRequests', 
-      match: { status: { $in: ['pending', 'approved'] } },
+      path: "borrowRequests",
+      match: { status: { $in: ["pending", "approved"] } },
       populate: {
-         path: 'book',
-         model: 'Book'
-      }
+        path: "book",
+        model: "Book",
+      },
     });
 
     res.status(200).json({
       success: true,
       user: user,
     });
-
   } catch (err) {
-     console.error("Get Profile Error:", err);
-     res.status(500).json({ success: false, error: err.message });
+    console.error("Get Profile Error:", err);
+    res.status(500).json({ success: false, error: err.message });
   }
 };
 
@@ -228,10 +224,14 @@ const getMyRequests = async (req, res) => {
 
     res.status(200).json(myRequests);
   } catch (error) {
-    res.status(500).json({ message: "Server error fetching your requests", error: error.message });
+    res
+      .status(500)
+      .json({
+        message: "Server error fetching your requests",
+        error: error.message,
+      });
   }
 };
-
 
 export {
   registerUser,
@@ -241,5 +241,5 @@ export {
   getFavBooks,
   removeFavBook,
   getMyProfile,
-  getMyRequests
+  getMyRequests,
 };
