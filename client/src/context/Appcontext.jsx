@@ -10,6 +10,7 @@ const Appcontextprovider = (props) => {
   const [user, setUser] = useState(null)
   const [borrowedRequest, setBorrowedRequest] = useState([])
   const [myRequests, setMyRequests] = useState([]);
+  const [loading, setLoading] = useState(true)
   // const [history, setHistory] = useState([])
   const [favBooks, setFavBooks] = useState([])
 
@@ -40,8 +41,64 @@ const Appcontextprovider = (props) => {
     }
   };
 
+
+  const addFavourite = async (userId, bookId) => {
+    try {
+      const res = await axios.post(
+        `${backendUrl}/api/users/${userId}/add-favourites/${bookId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // update state only when added successfully
+      setUser((prev) => ({
+        ...prev,
+        favourites: [...prev.favourites, bookId],
+      }));
+      setFavBooks((prev) => [...prev, bookId]);
+
+      toast.success(res.data.message);
+      return res.data.message;
+
+    } catch (err) {
+      if (err.response) {
+        // backend returned 400/404 with a message
+        toast.error(err.response.data.message || "Something went wrong");
+        return err.response.data.message;
+      } else {
+        toast.error("Network error, please try again");
+        return "Network error";
+      }
+    }
+  };
+
+
+  // Remove book from favourites
+  const removeFavourite = async (userId, bookId) => {
+    try {
+      const res = await axios.delete(
+        `${backendUrl}/api/users/${userId}/remove-favourites/${bookId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+      );
+      // update state
+      setUser((prev) => ({
+        ...prev,
+        favourites: prev.favourites.filter((id) => id !== bookId),
+      }));
+      setFavBooks((prev) => prev.filter((id) => id !== bookId));
+      toast.success(res.data.message)
+      return res.data.message;
+    } catch (err) {
+      console.error("Error removing favourite:", err);
+    }
+  };
+
+
   const fetchMyRequests = async () => {
     try {
+      setLoading(true);
+
       const res = await axios.get(`${backendUrl}/api/users/my-requests`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -50,8 +107,11 @@ const Appcontextprovider = (props) => {
     } catch (error) {
       toast.error("Failed to fetch your books.");
       console.error("Fetch my books error:", error);
+    } finally {
+      setLoading(false)
     }
   };
+
 
   // This function now correctly calls the updated backend route
   const borrowBook = async (bookId) => {
@@ -128,42 +188,42 @@ const Appcontextprovider = (props) => {
   };
 
   const reBorrowBook = async (bookId) => {
-  try {
-    const res = await axios.post(
-      `${backendUrl}/api/users/borrow-book/${bookId}`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    const newBorrow = res.data.borrow;
-    if (!newBorrow) throw new Error(res.data.message || "No borrow returned");
-
-    // update borrowedRequest safely
-    setBorrowedRequest((prev) => {
-      const exists = prev.find(
-        (req) => req.book?._id?.toString() === bookId.toString()
+    try {
+      const res = await axios.post(
+        `${backendUrl}/api/users/borrow-book/${bookId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      if (exists) {
-        return prev.map((req) =>
-          req.book?._id?.toString() === bookId.toString() ? newBorrow : req
+
+      const newBorrow = res.data.borrow;
+      if (!newBorrow) throw new Error(res.data.message || "No borrow returned");
+
+      // update borrowedRequest safely
+      setBorrowedRequest((prev) => {
+        const exists = prev.find(
+          (req) => req.book?._id?.toString() === bookId.toString()
         );
-      }
-      return [...prev, newBorrow];
-    });
+        if (exists) {
+          return prev.map((req) =>
+            req.book?._id?.toString() === bookId.toString() ? newBorrow : req
+          );
+        }
+        return [...prev, newBorrow];
+      });
 
-    toast.success("Book re-borrowed successfully!");
-    fetchMyRequests();
-    return newBorrow;
+      toast.success("Book re-borrowed successfully!");
+      fetchMyRequests();
+      return newBorrow;
 
-  } catch (err) {
-    console.error("Re-borrow error:", err.response?.data || err.message);
-    toast.error(err.response?.data?.message || err.message);
-  }
-};
+    } catch (err) {
+      console.error("Re-borrow error:", err.response?.data || err.message);
+      toast.error(err.response?.data?.message || err.message);
+    }
+  };
 
 
 
@@ -172,8 +232,8 @@ const Appcontextprovider = (props) => {
   useEffect(() => {
     if (token) {
       fetchProfile();
-    }else{
-      setUser({name: "guest"})
+    } else {
+      setUser({ name: "guest" })
     }
   }, [token]);
 
@@ -181,6 +241,7 @@ const Appcontextprovider = (props) => {
   if (!user) {
     return <p>Loading profile...</p>; // 👈 Prevents crash
   }
+
 
 
   const value = {
@@ -197,10 +258,13 @@ const Appcontextprovider = (props) => {
     returnBook,
     fetchMyRequests,
     myRequests,
-    favBooks,
+    addFavourite,
+    removeFavourite,
     setFavBooks,
+    favBooks,
     fetchProfile,
-    reBorrowBook
+    reBorrowBook,
+    loading,
   };
 
   return (

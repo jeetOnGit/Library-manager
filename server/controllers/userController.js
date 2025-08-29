@@ -64,9 +64,7 @@ const loginUser = async (req, res) => {
     }
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      return res.json({ success: false, message: "Invalid credentials" });
     }
 
     // compare password
@@ -132,10 +130,10 @@ const addFavBooks = async (req, res) => {
       return res.status(404).json({ message: "User or Book not found" });
     }
 
-    // prevent duplicates
-    if (user.favourites.includes(bookId)) {
-      return res.status(400).json({ message: "Book already in favourites" });
-    }
+    if (user.favourites.some(fav => fav.toString() === bookId)) {
+  return res.status(400).json({ message: "Book already in favourites" });
+}
+
 
     // update only favourites
     await userModel.findByIdAndUpdate(

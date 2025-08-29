@@ -3,15 +3,16 @@ import { QRCodeCanvas } from "qrcode.react";
 import { AppContext } from "../context/Appcontext";
 
 const MyBooks = () => {
-  const { myRequests, fetchMyRequests, returnBook } = useContext(AppContext);
+  const { myRequests, fetchMyRequests, returnBook, loading } = useContext(AppContext);
   const [selectedBook, setSelectedBook] = useState(null);
 
   useEffect(() => {
     fetchMyRequests();
-    // console.log(myRequests[0].status);
-
   }, []);
 
+    if (loading) {
+    return <p>Loading data....</p>
+  }
   const handleShowQR = (request) => {
     setSelectedBook(request);
   };
@@ -28,7 +29,10 @@ const MyBooks = () => {
 
   return (
     <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-      {myRequests.map((req) => (
+      {
+        myRequests.length === 0 ? "No Books Found" : 
+        <div>
+          {myRequests.map((req) => (
         <div
           key={req._id}
           className="p-4 border rounded-lg shadow-md bg-white flex flex-col items-center"
@@ -90,6 +94,9 @@ const MyBooks = () => {
           </div>
         </div>
       )}
+        </div>
+      }
+      
     </div>
   );
 };

@@ -9,6 +9,7 @@ const Login = () => {
   const { backendUrl, token, setToken } = useContext(AppContext);
   const [state, setState] = useState("signup");
   const [email, setEmail] = useState("");
+  const [visibleEye, setVisibleEye] = useState(false)
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const navigate = useNavigate();
@@ -96,15 +97,21 @@ const Login = () => {
             />
           </div>
 
-          <div className="">
+          <div className="relative">
             <p className="text-txtprimary">Password</p>
             <input
               className="border border-zinc-300 rounded w-full py-1 ps-2 focus:outline-none"
-              type="password"
+              type={visibleEye ? "text" : "password"}
               placeholder="Your password here..."
               onChange={(e) => setPassword(e.target.value)}
               value={password}
             />
+            
+            {visibleEye ? <i class="fa-solid fa-eye absolute cursor-pointer right-3 top-8" o/> : <i class="fa-solid fa-eye-slash absolute cursor-pointer right-3 top-8" />}
+              <button
+              onClick={()=> setVisibleEye(!visibleEye)}>
+                {visibleEye ? <i class="fa-solid fa-eye absolute cursor-pointer right-3 top-8" o/> : <i class="fa-solid fa-eye-slash absolute cursor-pointer right-3 top-8" />}
+              </button>
           </div>
 
           <button

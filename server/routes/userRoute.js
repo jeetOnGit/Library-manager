@@ -8,8 +8,8 @@ const userRouter = express.Router()
 userRouter.post('/register', registerUser)
 userRouter.post('/login', loginUser)
 
-userRouter.post('/:userId/add-favourites/:bookId', addFavBooks)
-userRouter.post('/:userId/remove-favourites/:bookId', removeFavBook)
+userRouter.post('/:userId/add-favourites/:bookId', authUser, addFavBooks)
+userRouter.delete('/:userId/remove-favourites/:bookId', authUser, removeFavBook)
 
 userRouter.post('/borrow-book/:bookId', authUser, borrowBook)
 userRouter.get('/my-requests', authUser, getMyRequests);

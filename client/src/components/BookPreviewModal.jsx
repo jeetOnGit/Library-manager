@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/Appcontext";
 
 const BookPreviewModal = ({ book, onClose }) => {
-  if (!book) return null;
+  if (!book) return null; 
+  const { favBooks, addFavourite, removeFavourite, user } = useContext(AppContext);
+  const isFavourite = favBooks?.includes(book._id) || false;
 
+  const handleClick = () => {
+    if (isFavourite) {
+      removeFavourite(user._id, book._id);
+    } else {
+      addFavourite(user._id, book._id);
+    }
+  };
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -36,19 +46,18 @@ const BookPreviewModal = ({ book, onClose }) => {
           Category: {book.genre || "N/A"}
         </p>
         <p
-          className={`mb-4 text-sm font-medium ${
-            book.copies > 3
+          className={`mb-4 text-sm font-medium ${book.copies > 3
               ? "text-green-600"
               : book.copies > 0
-              ? "text-yellow-600"
-              : "text-red-600"
-          }`}
+                ? "text-yellow-600"
+                : "text-red-600"
+            }`}
         >
           {book.copies > 3
             ? "Available"
             : book.copies > 0
-            ? "Low Stock"
-            : "Out of Stock"}
+              ? "Low Stock"
+              : "Out of Stock"}
         </p>
 
         {/* Description */}
@@ -60,20 +69,20 @@ const BookPreviewModal = ({ book, onClose }) => {
         <div className="flex gap-3">
           <button
             disabled={book.copies === 0}
-            className={`flex-1 px-3 py-2 rounded text-white ${
-              book.copies === 0
+            className={`flex-1 px-3 py-2 rounded text-white ${book.copies === 0
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-blue-500 hover:bg-blue-600"
-            }`}
+              }`}
           >
             Borrow
           </button>
 
           <button
             disabled={book.copies === 0}
+            onClick={handleClick}
             className={`flex-1 px-3 py-2 rounded text-white bg-blue-500 hover:bg-blue-600`}
           >
-            Add to wishlist
+           {isFavourite ? "Remove from Favourites" : "Add to Favourites"}
           </button>
         </div>
       </div>

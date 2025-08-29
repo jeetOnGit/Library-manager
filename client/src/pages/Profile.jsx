@@ -1,23 +1,38 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { AppContext } from "../context/Appcontext";
 
 const Profile = () => {
-  const {user} = useContext(AppContext)
+
+  const { user } = useContext(AppContext)
+
+  const [isEdit, setIsEdit] = useState(false)
+  const [image, setImage] = useState(false)
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       {/* Header Section */}
       <div className="flex items-center gap-6 bg-white shadow rounded-xl p-6">
-        <img
-          src="public/user.jpg"
-          alt="user"
-          className="w-24 h-24 rounded-full border-4 border-blue-500"
-        />
+        <div className="flex flex-col gap-2">
+
+          <img
+            src={user.image}
+            alt="user"
+            className="w-24 h-24 rounded-full border-4 border-blue-500"
+          />
+          
+          {isEdit ? <button className="px-1 py-1 text-center text-base font-semibold rounded-full bg-yellow-100 text-yellow-800">✏️ Edit</button> : ""}
+
+        </div>
+
         <div>
-          {/* <h1 className="text-2xl font-bold text-gray-800">{user.name}</h1> */}
-          <p className="text-gray-600">{user.email}</p>
-          <p className="text-gray-500 text-sm">
-            {/* Roll No: {user.roll} • Course: {user.course} */}
-          </p>
+
+          {isEdit ? <input type="text" placeholder="Your new Name" /> : <h1 className="text-2xl font-bold text-gray-800">{user.name} <span className="px-3 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">{user.studentId}</span></h1>}
+          <div className="flex justify-between items-center gap-2">
+            <p className="text-gray-600">{user.email}</p>
+            <p className="text-gray-500 text-sm">{user.phone}</p>
+            <p className="text-gray-500 text-sm">{user.gender}</p>
+          </div>
+
         </div>
       </div>
 
@@ -30,7 +45,7 @@ const Profile = () => {
             href="/my-books"
             className="p-4 bg-white rounded-xl shadow hover:bg-blue-50 transition"
           >
-            📚 My Books 
+            📚 My Books
           </a>
           <a
             href="/history"
@@ -42,7 +57,7 @@ const Profile = () => {
             href="/favourites"
             className="p-4 bg-white rounded-xl shadow hover:bg-blue-50 transition"
           >
-            ❤️ Favourites{user.favourites.length}
+            ❤️{user.favourites.length} Books in your wishlist
           </a>
           <a
             href="/recommendations"
@@ -57,8 +72,9 @@ const Profile = () => {
       <div className="mt-8">
         <h2 className="text-xl font-semibold text-gray-800">Account Settings</h2>
         <div className="space-y-3 mt-3">
-          <button className="w-full text-left p-4 bg-white rounded-xl shadow hover:bg-blue-50 transition">
-            ✏️ Edit Profile
+          <button className="w-full text-left p-4 bg-white rounded-xl shadow hover:bg-blue-50 transition"
+            onClick={() => setIsEdit(!isEdit)}>
+            {isEdit ? "Save changes" : "✏️ Edit Profile(Currently you can't update profile)"}
           </button>
           <button className="w-full text-left p-4 bg-white rounded-xl shadow hover:bg-blue-50 transition">
             🔒 Change Password

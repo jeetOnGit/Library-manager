@@ -2,18 +2,21 @@ import React, { useEffect, useContext } from "react";
 import { AppContext } from "../context/Appcontext";
 
 const ReadingHistory = () => {
-  const { myRequests, fetchMyRequests, reBorrowBook } = useContext(AppContext);
+  const { myRequests, fetchMyRequests, reBorrowBook, loading } = useContext(AppContext);
 
-  useEffect(() => {
-    fetchMyRequests();
-  }, []);
+    if (loading) {
+    return <p>Loading data....</p>
+  }
+  // useEffect(() => {
+  //   fetchMyRequests();
+  // }, []);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">📚 My Reading History</h1>
 
       {myRequests.length === 0 ? (
-        <p className="text-gray-500">No history found.</p>
+        <p className="text-gray-500">No Data Found.</p>
       ) : (
         <div className="grid gap-4">
           {myRequests.map((book) => {
