@@ -28,10 +28,10 @@ const MyBooks = () => {
   };
 
   return (
-    <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="p-6">
       {
         myRequests.length === 0 ? "No Books Found" : 
-        <div>
+        <div className="grid grid-cols-3 sm:grid-cols-1 md:grid-cols-3 gap-6">
           {myRequests.map((req) => (
         <div
           key={req._id}

@@ -1,15 +1,34 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "../context/Appcontext";
 import { Link, useNavigate } from "react-router-dom";
 const Dashboard = () => {
-  const { backendUrl, token, setToken, user } = useContext(AppContext);
+  const { setToken, user, myRequests, fetchMyRequests } = useContext(AppContext);
   const navigate = useNavigate();
+  const approvedCount = myRequests.filter(req => req.status === "approved").length;
+  const returnCount = myRequests.filter(req => req.status === "returned").length;
+  const currentDate = new Date().toLocaleDateString("en-GB", {year: "numeric", month: "short",day: "2-digit",})
+  const dueDate = new Date(new Date(myRequests.borrowedAt).setDate(new Date(myRequests.borrowedAt).getDate() + 7)).   toLocaleDateString("en-GB", {year: "numeric", month: "short",day: "2-digit",})
+
+  const dueSoonCount = myRequests.filter((req) => {
+  const dueDate = new Date(req.borrowedAt);
+  dueDate.setDate(dueDate.getDate() + 7);
+
+  // const today = new Date();
+  const diffTime = dueDate - currentDate;
+  const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return daysLeft <= 2 && daysLeft >= 0; // due soon
+}).length;
 
   const logout = () => {
     setToken("");
     localStorage.removeItem("token");
     navigate("/");
   };
+
+  useEffect(() => {
+    fetchMyRequests()
+  }, [])
 
   return (
     <div className="">
@@ -45,7 +64,7 @@ const Dashboard = () => {
                 </li>
               </ul>
               <ul>
-                <li className="text-3xl font-bold">2</li>
+                <li className="text-3xl font-bold">{approvedCount}</li>
                 <li className="text-xs text-txtsecondary">
                   Currently checked out
                 </li>
@@ -60,7 +79,7 @@ const Dashboard = () => {
                 </li>
               </ul>
               <ul>
-                <li className="text-3xl font-bold">1</li>
+                <li className="text-3xl font-bold">{dueSoonCount}</li>
                 <li className="text-xs text-txtsecondary">within 7 days</li>
               </ul>
             </div>
@@ -86,7 +105,7 @@ const Dashboard = () => {
                 </li>
               </ul>
               <ul>
-                <li className="text-3xl font-bold">24</li>
+                <li className="text-3xl font-bold">{returnCount}</li>
                 <li className="text-xs text-txtsecondary">This Semester</li>
               </ul>
             </div>
@@ -100,34 +119,35 @@ const Dashboard = () => {
                 <i className="fa-solid fa-book-open" /> Currently Borrowed
               </h4>
               <div className="flex flex-col gap-3 mt-4">
-                <div className="flex justify-between items-center border rounded py-4 px-3">
-                  <div>
-                    <h6 className="font-semibold">
-                      Introduction to Psychology
-                    </h6>
-                    <p className="text-xs text-txtsecondary">David Myers</p>
-                    <p className="text-xs text-txtsecondary">Due: 2024-01-15</p>
-                  </div>
+                {
+                  myRequests.map((req) => (
+                    <div className="flex justify-between items-center border rounded py-4 px-3" key={req._id}>
+                      <div>
+                        <h6 className="font-semibold">
+                          {req.book?.title}
+                        </h6>
+                        <p className="text-xs text-txtsecondary">{req.book?.author}</p>
+                        <p className="text-xs text-txtsecondary">Due: {dueDate} </p>
+                      </div>
 
-                  <div>
-                    <p className="border rounded-full px-2 bg-red-600 text-white">3 days left</p>
-                  </div>
-                </div>
+                      <div>
+                        <p className="border rounded-full px-2 bg-red-600 text-white">{(() => {
+                          const borrowedAt = new Date(req.borrowedAt);
+                          const dueDate = new Date(borrowedAt);
+                          dueDate.setDate(borrowedAt.getDate() + 7);
 
-                <div className="flex justify-between items-center border rounded py-2 px-3">
-                  <div>
-                    <h6 className="font-semibold">
-                      Calculus: Early Transcendentals
-                    </h6>
-                    <p className="text-xs text-txtsecondary">James Stewart</p>
-                    <p className="text-xs text-txtsecondary">Due: 2024-01-20</p>
-                  </div>
+                          const today = new Date();
+                          const diffTime = dueDate - today;
+                          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                  <div>
-                    <p className="border rounded-full px-2">8 days left</p>
-                  </div>
-                </div>
+                          return diffDays > 0 ? `${diffDays} days left` : "Overdue";
+                        })()}</p>
+                      </div>
+                    </div>
+                  ))
+                }
               </div>
+
             </div>
 
             <div className="border px-2 py-2 rounded">
